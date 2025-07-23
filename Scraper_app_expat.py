@@ -56,6 +56,11 @@ def scrapper_villas(paged, pagef):
         DF = pd.DataFrame(data)
         df = pd.concat([df, DF], axis=0).reset_index(drop=True)
 
+    df['nombre_pieces'] = pd.to_numeric(df['nombre_pieces'], errors='coerce')
+    df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
+    df.dropna(subset=['nombre_pieces', 'prix'], inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
     return df
 
 def scrapper_terrains(page_debut=1, page_fin=50):
@@ -99,6 +104,10 @@ def scrapper_terrains(page_debut=1, page_fin=50):
         df_page = pd.DataFrame(data)
         df = pd.concat([df, df_page], axis=0).reset_index(drop=True)
 
+    df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
+    df['superficie'] = df['superficie'].str.extract(r'(\d+)').astype(float)  # Si "600 m2"
+    df.dropna(subset=['prix'], inplace=True)
+    df.reset_index(drop=True, inplace=True)
     return df
 
 def scrapper_appartements(page_debut=1, page_fin=50):
@@ -150,6 +159,13 @@ def scrapper_appartements(page_debut=1, page_fin=50):
 
         df_page = pd.DataFrame(data)
         df = pd.concat([df, df_page], axis=0).reset_index(drop=True)
+
+    
+    df['nombre_pieces'] = pd.to_numeric(df['nombre_pieces'], errors='coerce')
+    df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
+    df.dropna(subset=['nombre_pieces', 'prix'], inplace=True)
+    df.reset_index(drop=True, inplace=True)
+
 
     return df
 
