@@ -105,7 +105,7 @@ def scrapper_terrains(page_debut=1, page_fin=50):
         df = pd.concat([df, df_page], axis=0).reset_index(drop=True)
 
     df['prix'] = pd.to_numeric(df['prix'], errors='coerce')
-    df['superficie'] = df['superficie'].str.extract(r'(\d+)').astype(float)  # Si "600 m2"
+    df['superficie'] = df['superficie'].astype(str).str.extract(r'(\d+)').astype(float)
     df.dropna(subset=['prix'], inplace=True)
     df.reset_index(drop=True, inplace=True)
     return df
